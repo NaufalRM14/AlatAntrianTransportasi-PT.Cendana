@@ -1,0 +1,172 @@
+---
+import Features2 from '~/components/widgets/Features2.astro';
+import Features3 from '~/components/widgets/Features3.astro';
+import Hero from '~/components/widgets/Hero.astro';
+import Stats from '~/components/widgets/Stats.astro';
+import Steps2 from '~/components/widgets/Steps2.astro';
+import Layout from '~/layouts/PageLayout.astro';
+
+const metadata = {
+  title: 'About us',
+};
+---
+
+<Layout metadata={metadata}>
+  <!-- Hero Widget ******************* -->
+
+  <Hero
+    tagline="Tentang Kami"
+    image={{
+      src: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+      alt: 'Kantor Alat Antrian',
+    }}
+  >
+    <Fragment slot="title">
+      Mitra Terpercaya Digitalisasi <br />
+      <span class="text-accent dark:text-white"> Pelayanan Kesehatan Indonesia</span>
+    </Fragment>
+
+    <Fragment slot="subtitle">
+      Kami berdedikasi untuk membantu Rumah Sakit, Puskesmas, dan Klinik dalam mengurai antrian dan meningkatkan
+      kepuasan pasien melalui teknologi yang handal dan mudah digunakan.
+    </Fragment>
+  </Hero>
+
+  <!-- Stats Widget ****************** -->
+
+  <Stats
+    title="Pencapaian Kami"
+    stats={[
+      { title: 'Tahun Pengalaman', amount: '10+' },
+      { title: 'Klien Faskes', amount: '150+' },
+      { title: 'Kota Jangkauan', amount: '34' },
+      { title: 'Teknisi Berkualitas', amount: '10+' },
+    ]}
+  />
+
+  <!-- Features3 Widget ************** -->
+
+  <Features3
+    title="Nilai Utama Kami"
+    subtitle="Prinsip yang kami pegang teguh dalam melayani setiap fasilitas kesehatan."
+    columns={3}
+    isBeforeContent={true}
+    items={[
+      {
+        title: 'Inovasi Berkelanjutan',
+        description:
+          'Kami terus mengembangkan software antrian agar selalu kompatibel dengan update terbaru BPJS (Mobile JKN) dan regulasi Kemenkes.',
+        icon: 'tabler:bulb',
+      },
+      {
+        title: 'Kualitas Hardware',
+        description:
+          'Menggunakan standar industri (Industrial Grade) untuk memastikan mesin kiosk tahan beroperasi 24 jam non-stop.',
+        icon: 'tabler:device-desktop',
+      },
+      {
+        title: 'Layanan Responsif',
+        description:
+          'Dukungan teknis yang cepat tanggap adalah prioritas kami, karena kami paham pelayanan pasien tidak boleh terhenti.',
+        icon: 'tabler:headset',
+      },
+    ]}
+  />
+
+  <!-- Features3 Widget ************** -->
+
+  <Features3
+    columns={3}
+    isAfterContent={true}
+    items={[
+      {
+        title: 'E-commerce',
+        description:
+          'Rutrum non odio at vehicula. Proin ipsum justo, dignissim in vehicula sit amet, dignissim id quam. Sed ac tincidunt sapien.',
+        icon: 'tabler:template',
+      },
+      {
+        title: 'Blog',
+        description:
+          'Nullam efficitur volutpat sem sed fringilla. Suspendisse et enim eu orci volutpat laoreet ac vitae libero.',
+        icon: 'tabler:template',
+      },
+      {
+        title: 'Business',
+        description:
+          'Morbi et elit finibus, facilisis justo ut, pharetra ipsum. Donec efficitur, ipsum quis congue luctus, mauris magna.',
+        icon: 'tabler:template',
+      },
+      {
+        title: 'Branding',
+        description:
+          'Suspendisse vitae nisi eget tortor luctus maximus sed non lectus. Cras malesuada pretium placerat. Nullam venenatis dolor a ante rhoncus.',
+        icon: 'tabler:template',
+      },
+      {
+        title: 'Medical',
+        description:
+          'Vestibulum malesuada lacus id nibh posuere feugiat. Nam volutpat nulla a felis ultrices, id suscipit mauris congue. In hac habitasse platea dictumst.',
+        icon: 'tabler:template',
+      },
+      {
+        title: 'Fashion Design',
+        description:
+          'Maecenas eu tellus eget est scelerisque lacinia et a diam. Aliquam velit lorem, vehicula id fermentum et, rhoncus et purus.',
+        icon: 'tabler:template',
+      },
+    ]}
+    image={{
+      src: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80',
+      alt: 'Colorful Image',
+    }}
+  />
+
+  <!-- Steps2 Widget ****************** -->
+
+  <Steps2
+    title="Sejarah Perjalanan"
+    subtitle="Dari sebuah startup kecil hingga menjadi vendor kepercayaan ratusan RSUD dan RS Swasta."
+    items={[
+      {
+        title: '2015: Awal Mula',
+        description:
+          'Berdiri sebagai penyedia hardware komputer umum, dan mulai meriset kebutuhan sistem antrian lokal.',
+      },
+      {
+        title: '2018: Fokus Kesehatan',
+        description: 'Meluncurkan Software Antrian V1 khusus untuk Puskesmas dengan fitur bridging dasar.',
+      },
+      {
+        title: '2021: Era Digital BPJS',
+        description:
+          'Mengembangkan sistem yang terintegrasi penuh dengan Mobile JKN dan V-Claim BPJS untuk mendukung transformasi digital RS.',
+      },
+      {
+        title: '2025: Ekspansi Nasional',
+        description:
+          'Memiliki jaringan teknisi di berbagai kota besar di Indonesia untuk layanan purna jual yang lebih baik.',
+      },
+    ]}
+  />
+
+  <Features2
+    title="Kantor Layanan"
+    tagline="Temukan Kami"
+    columns={3}
+    items={[
+      {
+        title: 'Jakarta (Pusat)',
+        description: 'Jl. Jendral Sudirman No. Kav 52, Jakarta Selatan',
+      },
+      {
+        title: 'Surabaya',
+        description: 'Jl. Raya Darmo No. 12, Surabaya',
+      },
+      {
+        title: 'Semarang',
+        description: 'Jl. Pemuda No. 150, Semarang',
+      },
+    ]}
+  />
+</Layout>

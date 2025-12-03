@@ -1,0 +1,31 @@
+---
+import Image from '~/components/common/Image.astro';
+import Button from '~/components/ui/Button.astro';
+
+const { author } = Astro.props;
+---
+
+<div class="author-card bg-blue-50 dark:bg-slate-800 p-6 rounded-xl border border-blue-100 dark:border-slate-700">
+  <div class="mb-4">
+    <span class="text-xs font-bold uppercase text-muted tracking-wider">Penulis</span>
+  </div>
+
+  <div class="flex items-center mb-4">
+    <div class="w-12 h-12 rounded-full bg-gray-200 overflow-hidden mr-3">
+      <Image src="~/assets/images/hero-image.png" alt="Author" width={48} height={48} />
+    </div>
+    <div>
+      <h4 class="font-bold text-gray-900 dark:text-white">{author || 'Tim Redaksi'}</h4>
+      <p class="text-xs text-muted">Spesialis Antrian RS</p>
+    </div>
+  </div>
+
+  <p class="text-sm text-gray-600 dark:text-slate-400 mb-6 leading-relaxed">
+    Kami berbagi wawasan tentang teknologi kesehatan dan manajemen rumah sakit terkini.
+  </p>
+
+  <div class="border-t border-gray-200 dark:border-slate-700 pt-4 mt-4">
+    <p class="text-xs font-bold mb-2 text-primary">Tertarik dengan produk kami?</p>
+    <Button variant="primary" class="w-full text-xs py-2" href="/contact"> Konsultasi Gratis </Button>
+  </div>
+</div>

@@ -1,0 +1,111 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '~/layouts/PageLayout.astro';
+import Image from '~/components/common/Image.astro';
+import Button from '~/components/ui/Button.astro';
+import { Icon } from 'astro-icon/components';
+// Import render agar Content bisa ditampilkan
+import { render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const products = await getCollection('product');
+
+  // PERBAIKAN UTAMA: Mapping product.id ke params.slug
+  return products.map((product) => ({
+    params: { slug: product.id },
+    props: { product },
+  }));
+}
+
+const { product } = Astro.props;
+// PERBAIKAN RENDER: Cara render content di Astro 5
+const { Content } = await render(product);
+
+const metadata = {
+  title: product.data.title,
+  description: product.data.description,
+};
+---
+
+<Layout metadata={metadata}>
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 pt-8 pb-4">
+    <a
+      href="/products"
+      class="btn-back inline-flex items-center px-4 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-full shadow-sm hover:bg-gray-50 hover:text-primary dark:bg-slate-800 dark:text-gray-300 dark:border-slate-700 dark:hover:bg-slate-700 transition-all duration-200"
+    >
+      <Icon name="tabler:chevron-left" class="w-5 h-5 mr-1 -ml-1" />
+      Kembali ke Katalog
+    </a>
+  </div>
+  <section class="py-8 sm:py-16 lg:py-20 mx-auto max-w-7xl px-4 sm:px-6">
+    <div class="grid gap-12 lg:grid-cols-2 items-start">
+      <div class="relative overflow-hidden rounded-lg shadow-lg bg-white dark:bg-slate-800 p-2">
+        {
+          product.data.image && (
+            <Image
+              src={product.data.image}
+              alt={product.data.title}
+              class="w-full h-auto rounded-md object-cover"
+              widths={[400, 800]}
+              width={800}
+              height={600}
+            />
+          )
+        }
+      </div>
+
+      <div>
+        <div class="mb-4">
+          <span class="text-sm font-bold uppercase tracking-wider text-primary">
+            {product.data.category}
+          </span>
+        </div>
+
+        <h1 class="text-4xl font-bold font-heading leading-tighter tracking-tighter mb-4">
+          {product.data.title}
+        </h1>
+
+        <p class="text-xl text-muted dark:text-slate-400 mb-6">
+          {product.data.description}
+        </p>
+
+        {
+          product.data.features && (
+            <div class="bg-blue-50 dark:bg-slate-800 rounded-lg p-6 mb-8 border border-blue-100 dark:border-slate-700">
+              <h3 class="font-bold text-lg mb-4 flex items-center">
+                <Icon name="tabler:star" class="w-5 h-5 mr-2 text-yellow-500" />
+                Fitur Unggulan
+              </h3>
+              <ul class="space-y-2">
+                {product.data.features.map((feature) => (
+                  <li class="flex items-start">
+                    <Icon name="tabler:check" class="w-5 h-5 mr-2 text-green-500 mt-0.5 flex-shrink-0" />
+                    <span class="text-gray-700 dark:text-gray-300">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )
+        }
+
+        <div class="flex flex-col sm:flex-row gap-4">
+          <Button
+            variant="primary"
+            href="https://wa.me/6282150065758?text=Halo%2C%20saya%20tertarik%20dengan%20produk%3A%20${encodeURIComponent(product.data.title)}%20yang%20ada%20di%20website."
+            icon="tabler:brand-whatsapp"
+          >
+            Minta Penawaran
+          </Button>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-16 border-t border-gray-200 dark:border-slate-700 pt-10">
+      <article
+        class="prose prose-lg max-w-4xl mx-auto dark:prose-invert prose-img:rounded-lg prose-headings:font-heading prose-a:text-primary hover:prose-a:underline"
+      >
+        <Content />
+      </article>
+    </div>
+  </section>
+</Layout>

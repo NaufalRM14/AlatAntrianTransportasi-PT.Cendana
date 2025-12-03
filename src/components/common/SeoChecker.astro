@@ -1,0 +1,360 @@
+---
+// Props: Terima data artikel
+const { title, description } = Astro.props;
+---
+
+<div id="seo-widget-container" style="display: none;" class="fixed bottom-4 right-4 z-[9999] font-sans text-gray-800">
+  <button
+    id="seo-toggle-btn"
+    class="bg-slate-900 text-white p-3 rounded-full shadow-xl hover:bg-slate-700 transition-all border border-slate-700"
+  >
+    <span class="text-xl">📊</span>
+  </button>
+
+  <div
+    id="seo-main-card"
+    class="hidden bg-white dark:bg-slate-800 shadow-2xl rounded-xl border border-gray-200 dark:border-gray-700 w-96 transform transition-all duration-300 flex flex-col max-h-[90vh] mt-2"
+  >
+    <div
+      class="bg-slate-900 text-white p-4 rounded-t-xl flex justify-between items-center shadow-md cursor-pointer"
+      id="seo-minimize-btn"
+    >
+      <div class="flex items-center gap-3">
+        <div class="relative">
+          <svg class="w-10 h-10 transform -rotate-90">
+            <circle
+              cx="20"
+              cy="20"
+              r="16"
+              stroke="currentColor"
+              stroke-width="4"
+              fill="transparent"
+              class="text-gray-700"></circle>
+            <circle
+              id="score-ring"
+              cx="20"
+              cy="20"
+              r="16"
+              stroke="currentColor"
+              stroke-width="4"
+              fill="transparent"
+              class="text-red-500 transition-all duration-1000"
+              stroke-dasharray="100"
+              stroke-dashoffset="100"></circle>
+          </svg>
+          <span id="score-text" class="absolute inset-0 flex items-center justify-center text-xs font-bold">0</span>
+        </div>
+        <div>
+          <h3 class="font-bold text-sm">SEO Content Analysis</h3>
+          <p id="score-label" class="text-[10px] text-gray-400">Needs Improvement</p>
+        </div>
+      </div>
+      <button class="text-gray-400 hover:text-white text-lg">_</button>
+    </div>
+
+    <div class="p-4 bg-gray-50 dark:bg-slate-700 border-b border-gray-200 dark:border-gray-600">
+      <label class="text-xs font-bold uppercase text-gray-500 mb-1 block">Focus Keyphrase (Target)</label>
+      <div class="flex gap-2">
+        <input
+          type="text"
+          id="focus-keyword"
+          placeholder="Contoh: Sistem Antrian RS"
+          class="w-full text-sm px-3 py-2 rounded border border-gray-300 focus:outline-none focus:border-primary dark:bg-slate-800 dark:border-gray-600 dark:text-white"
+        />
+        <button
+          id="btn-analyze"
+          class="bg-blue-600 text-white px-3 py-2 rounded text-xs font-bold hover:bg-blue-700 transition">Cek</button
+        >
+      </div>
+    </div>
+
+    <div class="p-0 overflow-y-auto flex-1 custom-scrollbar bg-white dark:bg-slate-800 rounded-b-xl">
+      <div class="p-4 border-b border-gray-100 dark:border-gray-700">
+        <h4 class="text-xs font-bold text-gray-400 uppercase mb-3">1. Struktur Dasar</h4>
+        <ul class="space-y-2 text-xs" id="list-basic"></ul>
+      </div>
+
+      <div class="p-4">
+        <h4 class="text-xs font-bold text-gray-400 uppercase mb-3">2. Analisis Konten</h4>
+        <ul class="space-y-2 text-xs" id="list-content">
+          <li class="text-gray-500 italic p-2 bg-gray-50 dark:bg-slate-700/50 rounded text-center">
+            ℹ️ Masukkan kata kunci di atas untuk melihat analisis mendalam.
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script define:vars={{ title, description }}>
+  document.addEventListener('astro:page-load', () => {
+    // --- 1. LOGIKA SECURITY (Secret Mode) ---
+    const container = document.getElementById('seo-widget-container');
+    if (!container) return;
+
+    // Cek: Apakah ini Localhost?
+    const isDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+
+    // Cek: Apakah ada "Kunci Rahasia" di URL? (Contoh: ?mode=seo)
+    const urlParams = new URLSearchParams(window.location.search);
+    const isSecretMode = urlParams.get('mode') === 'seo';
+
+    // TAMPILKAN HANYA JIKA: Localhost ATAU Secret Mode
+    if (isDev || isSecretMode) {
+      container.style.display = 'block';
+    } else {
+      return; // Stop script (Hemat resource utk user publik)
+    }
+
+    // --- 2. DEKLARASI VARIABEL UI ---
+    const widget = document.getElementById('seo-main-card');
+    const toggleBtn = document.getElementById('seo-toggle-btn');
+    const minimizeBtn = document.getElementById('seo-minimize-btn');
+    const keywordInput = document.getElementById('focus-keyword');
+    const analyzeBtn = document.getElementById('btn-analyze');
+
+    const listBasic = document.getElementById('list-basic');
+    const listContent = document.getElementById('list-content');
+    const scoreRing = document.getElementById('score-ring');
+    const scoreText = document.getElementById('score-text');
+    const scoreLabel = document.getElementById('score-label');
+
+    // Toggle Widget (Buka/Tutup)
+    const toggleWidget = () => {
+      widget.classList.toggle('hidden');
+    };
+    minimizeBtn.addEventListener('click', toggleWidget);
+    toggleBtn.addEventListener('click', toggleWidget);
+
+    // Helper: Membuat List Item HTML
+    const createItem = (text, status) => {
+      let icon = '⚪️';
+      let color = 'text-gray-500 dark:text-gray-400';
+
+      if (status === 'good') {
+        icon = '✅';
+        color = 'text-green-600 dark:text-green-400 font-medium';
+      }
+      if (status === 'warning') {
+        icon = '⚠️';
+        color = 'text-yellow-600 dark:text-yellow-400';
+      }
+      if (status === 'bad') {
+        icon = '❌';
+        color = 'text-red-500 dark:text-red-400';
+      }
+
+      return `<li class="flex items-start gap-2 ${color}"><span class="flex-shrink-0 mt-0.5">${icon}</span> <span>${text}</span></li>`;
+    };
+
+    // --- 3. LOGIKA ANALISIS UTAMA ---
+    const runAnalysis = () => {
+      const keyword = keywordInput.value.toLowerCase().trim();
+      let score = 0;
+      let totalWeight = 0;
+      let basicHtml = '';
+      let contentHtml = '';
+
+      // === BAGIAN A: CEK STRUKTUR DASAR (Bobot 40%) ===
+
+      // A1. Judul
+      const titleLen = title ? title.length : 0;
+      if (titleLen >= 20 && titleLen <= 70) {
+        basicHtml += createItem(`Panjang Judul Optimal (${titleLen} chars)`, 'good');
+        score += 10;
+      } else {
+        basicHtml += createItem(`Panjang Judul: ${titleLen} chars (Ideal: 20-70)`, 'bad');
+      }
+      totalWeight += 10;
+
+      // A2. Deskripsi
+      const descLen = description ? description.length : 0;
+      if (descLen >= 100 && descLen <= 160) {
+        basicHtml += createItem(`Meta Description Optimal (${descLen} chars)`, 'good');
+        score += 10;
+      } else if (descLen > 0) {
+        basicHtml += createItem(`Meta Description: ${descLen} chars (Ideal: 100-160)`, 'warning');
+        score += 5;
+      } else {
+        basicHtml += createItem(`Meta Description Kosong!`, 'bad');
+      }
+      totalWeight += 10;
+
+      // A3. Panjang Artikel (Word Count)
+      // Ambil teks dari div dengan class .prose (konten artikel)
+      const articleBody = document.querySelector('.prose');
+      const textContent = articleBody ? articleBody.innerText : '';
+      const wordCount = textContent.trim().split(/\s+/).length;
+
+      if (wordCount >= 600) {
+        basicHtml += createItem(`Artikel Panjang & Mendalam (${wordCount} kata)`, 'good');
+        score += 10;
+      } else if (wordCount >= 300) {
+        basicHtml += createItem(`Panjang Artikel Cukup (${wordCount} kata)`, 'good');
+        score += 10;
+      } else {
+        basicHtml += createItem(`Artikel Pendek (${wordCount} kata). Minimal 300.`, 'bad');
+      }
+      totalWeight += 10;
+
+      // A4. Link Internal/External
+      const links = articleBody ? articleBody.querySelectorAll('a') : [];
+      if (links.length > 0) {
+        basicHtml += createItem(`Memiliki ${links.length} Link Referensi`, 'good');
+        score += 10;
+      } else {
+        basicHtml += createItem(`Tidak ada Link sama sekali.`, 'warning');
+      }
+      totalWeight += 10;
+
+      // === BAGIAN B: CEK KONTEN KEYWORD (Bobot 60%) ===
+      if (keyword) {
+        // B1. Keyword di Judul
+        const titleLower = title.toLowerCase();
+        if (titleLower.startsWith(keyword)) {
+          contentHtml += createItem(`Keyword ada di AWAL Judul`, 'good');
+          score += 10;
+        } else if (titleLower.includes(keyword)) {
+          contentHtml += createItem(`Keyword ada di Judul (tapi bukan di awal)`, 'warning');
+          score += 5;
+        } else {
+          contentHtml += createItem(`Keyword TIDAK ADA di Judul`, 'bad');
+        }
+        totalWeight += 10;
+
+        // B2. Keyword di Paragraf Pertama
+        const firstPara = articleBody ? articleBody.querySelector('p') : null;
+        if (firstPara && firstPara.innerText.toLowerCase().includes(keyword)) {
+          contentHtml += createItem(`Keyword muncul di paragraf pertama`, 'good');
+          score += 10;
+        } else {
+          contentHtml += createItem(`Keyword TIDAK ADA di paragraf pertama`, 'bad');
+        }
+        totalWeight += 10;
+
+        // B3. Keyword Density
+        const regex = new RegExp(keyword, 'gi');
+        const matchCount = (textContent.match(regex) || []).length;
+        const density = (matchCount / wordCount) * 100;
+
+        if (density >= 0.5 && density <= 2.5) {
+          contentHtml += createItem(`Kepadatan Keyword Bagus: ${density.toFixed(1)}% (${matchCount} kali)`, 'good');
+          score += 10;
+        } else if (density > 2.5) {
+          contentHtml += createItem(`Keyword Stuffing! Terlalu sering (${density.toFixed(1)}%)`, 'bad');
+        } else {
+          contentHtml += createItem(`Keyword Jarang Muncul: ${density.toFixed(1)}% (Target > 0.5%)`, 'warning');
+          score += 3;
+        }
+        totalWeight += 10;
+
+        // B4. Subheading (H2/H3)
+        const headings = articleBody ? articleBody.querySelectorAll('h2, h3') : [];
+        let headingHasKw = false;
+        headings.forEach((h) => {
+          if (h.innerText.toLowerCase().includes(keyword)) headingHasKw = true;
+        });
+
+        if (headingHasKw) {
+          contentHtml += createItem(`Keyword ada di Sub-heading (H2/H3)`, 'good');
+          score += 10;
+        } else {
+          contentHtml += createItem(`Sebar Keyword di Sub-heading (H2/H3)`, 'warning');
+        }
+        totalWeight += 10;
+
+        // B5. Gambar & Alt Text
+        const images = document.querySelectorAll('img');
+        let imgHasKw = false;
+        let hasImage = false;
+
+        images.forEach((img) => {
+          if (img.width > 50) {
+            // Abaikan icon kecil
+            hasImage = true;
+            if (img.alt && img.alt.toLowerCase().includes(keyword)) imgHasKw = true;
+          }
+        });
+
+        if (imgHasKw) {
+          contentHtml += createItem(`Gambar memiliki Alt Text dengan Keyword`, 'good');
+          score += 10;
+        } else if (hasImage) {
+          contentHtml += createItem(`Gambar ada, tapi Alt Text belum mengandung Keyword`, 'warning');
+          score += 3;
+        } else {
+          contentHtml += createItem(`Tidak ada gambar`, 'bad');
+        }
+        totalWeight += 10;
+
+        // B6. Meta Description
+        const descLower = description ? description.toLowerCase() : '';
+        if (descLower.includes(keyword)) {
+          contentHtml += createItem(`Keyword ada di Meta Description`, 'good');
+          score += 10;
+        } else {
+          contentHtml += createItem(`Keyword TIDAK ADA di Meta Description`, 'bad');
+        }
+        totalWeight += 10;
+      } else {
+        contentHtml = `<li class="text-gray-500 italic p-4 text-center">ℹ️ Masukkan kata kunci di kolom atas untuk melihat analisis konten mendalam.</li>`;
+        // Jika keyword kosong, kita hitung skor berdasarkan Basic saja agar tidak selalu 0
+        // Total weight basic = 40.
+      }
+
+      // --- RENDER HASIL ---
+      listBasic.innerHTML = basicHtml;
+      listContent.innerHTML = contentHtml;
+
+      // --- HITUNG SKOR FINAL ---
+      const denominator = keyword ? totalWeight : 40;
+      const finalPercentage = Math.round((score / denominator) * 100);
+
+      // Animasi Ring Skor
+      scoreText.innerText = finalPercentage;
+      const offset = 100 - finalPercentage;
+      scoreRing.style.strokeDashoffset = offset;
+
+      // Warna & Label Skor
+      scoreRing.classList.remove('text-red-500', 'text-yellow-500', 'text-green-500');
+      if (finalPercentage >= 80) {
+        scoreRing.classList.add('text-green-500');
+        scoreLabel.innerText = 'Excellent';
+        scoreLabel.className = 'text-[10px] text-green-600 font-bold';
+      } else if (finalPercentage >= 50) {
+        scoreRing.classList.add('text-yellow-500');
+        scoreLabel.innerText = 'Good Enough';
+        scoreLabel.className = 'text-[10px] text-yellow-600 font-bold';
+      } else {
+        scoreRing.classList.add('text-red-500');
+        scoreLabel.innerText = 'Poor';
+        scoreLabel.className = 'text-[10px] text-red-600 font-bold';
+      }
+    };
+
+    // Event Listeners
+    analyzeBtn.addEventListener('click', runAnalysis);
+    keywordInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') runAnalysis();
+    });
+
+    // Jalankan analisis dasar saat load
+    runAnalysis();
+  });
+</script>
+
+<style>
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+  }
+</style>

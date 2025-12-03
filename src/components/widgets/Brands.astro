@@ -1,0 +1,159 @@
+---
+import type { Brands as Props, Image as ImageType } from '~/types';
+import Image from '~/components/common/Image.astro';
+import Headline from '~/components/ui/Headline.astro';
+import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
+
+const {
+  title = '',
+  subtitle = '',
+  tagline = '',
+  images = [],
+  id,
+  isDark = false,
+  classes = {},
+  bg = await Astro.slots.render('bg'),
+} = Astro.props;
+
+const chunkSize = 5;
+const chunks: ImageType[][] = [];
+
+// Membagi images menjadi potongan-potongan (Chunks) per 5 item
+if (images && images.length > 0) {
+  for (let i = 0; i < images.length; i += chunkSize) {
+    chunks.push(images.slice(i, i + chunkSize));
+  }
+}
+---
+
+<WidgetWrapper id={id} isDark={isDark} containerClass={`max-w-6xl mx-auto ${classes?.container ?? ''}`} bg={bg}>
+  <Headline title={title} subtitle={subtitle} tagline={tagline} />
+
+  <div class="relative w-full h-28 overflow-hidden flex justify-center items-center">
+    {
+      chunks.length > 0 ? (
+        chunks.map((chunk, groupIndex) => (
+          <div
+            class={`brand-group absolute inset-0 flex justify-center items-center gap-8 md:gap-12
+          ${groupIndex === 0 ? 'z-10' : 'z-0'}`}
+            data-index={groupIndex}
+          >
+            {chunk.map((image: ImageType, imgIndex: number) => (
+              /* INIT STATE:
+               - Grup 0: Posisi Normal (translate-y-0), Opacity 1
+               - Grup Lain: Posisi Bawah (translate-y-10), Opacity 0
+            */
+              <div
+                class={`brand-item transition-all duration-700 ease-out
+              ${groupIndex === 0 ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
+                data-delay={imgIndex * 100}
+              >
+                {image.src && (
+                  <Image
+                    src={image.src}
+                    alt={image.alt || ''}
+                    class="max-h-12 w-auto opacity-50 hover:opacity-100 transition-opacity duration-300 grayscale hover:grayscale-0"
+                    width={150}
+                    height={60}
+                    layout="fixed"
+                    style="object-fit: contain;"
+                  />
+                )}
+              </div>
+            ))}
+          </div>
+        ))
+      ) : (
+        <div class="text-center text-gray-400">Tidak ada logo ditampilkan</div>
+      )
+    }
+  </div>
+</WidgetWrapper>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const groups = document.querySelectorAll('.brand-group');
+    const totalGroups = groups.length;
+    let currentIndex = 0;
+
+    // Jika cuma 1 grup, tidak perlu animasi
+    if (totalGroups <= 1) return;
+
+    setInterval(() => {
+      // 1. Definisikan Siapa yang Keluar, Siapa yang Masuk
+      const currentGroup = groups[currentIndex] as HTMLElement;
+      const nextIndex = (currentIndex + 1) % totalGroups;
+      const nextGroup = groups[nextIndex] as HTMLElement;
+
+      const currentItems = currentGroup.querySelectorAll('.brand-item');
+      const nextItems = nextGroup.querySelectorAll('.brand-item');
+
+      // ---------------------------------------------
+      // FASE 1: KELUAR (ANIMASI KE ATAS)
+      // ---------------------------------------------
+      // Grup sekarang naik ke atas (-translate-y-10) dan hilang
+      currentGroup.style.zIndex = '0'; // Turunkan z-index biar tidak menutupi yang mau masuk
+
+      currentItems.forEach((item) => {
+        const el = item as HTMLElement;
+        const delay = parseInt(el.dataset.delay || '0');
+
+        // Pastikan transisi aktif
+        el.classList.remove('transition-none');
+        el.classList.add('transition-all', 'duration-700', 'ease-out');
+
+        // Jeda sedikit biar staggered (satu-satu)
+        setTimeout(() => {
+          el.classList.remove('translate-y-0', 'opacity-100');
+          el.classList.add('-translate-y-10', 'opacity-0'); // Naik ke langit-langit
+        }, delay);
+      });
+
+      // ---------------------------------------------
+      // FASE 2: MASUK (ANIMASI DARI BAWAH)
+      // ---------------------------------------------
+      // Grup selanjutnya naik dari lantai (-translate-y-0) dan muncul
+      nextGroup.style.zIndex = '10'; // Naikkan z-index
+
+      nextItems.forEach((item) => {
+        const el = item as HTMLElement;
+        const delay = parseInt(el.dataset.delay || '0');
+
+        // Pastikan posisi awal di bawah (Jaga-jaga)
+        // Kita tidak mau animasi saat setting posisi awal, jadi pakai transition-none dulu kalau perlu
+        // Tapi karena logika FASE 3 di bawah, harusnya dia sudah di bawah.
+
+        setTimeout(() => {
+          // Aktifkan animasi
+          el.classList.remove('transition-none');
+          el.classList.add('transition-all', 'duration-700', 'ease-out');
+
+          // Gerakkan ke tengah
+          el.classList.remove('translate-y-10', 'opacity-0');
+          el.classList.add('translate-y-0', 'opacity-100');
+        }, delay + 300); // Tunggu 300ms setelah grup lama mulai bergerak, baru ini masuk
+      });
+
+      // ---------------------------------------------
+      // FASE 3: RESET (TELEPORTASI DIAM-DIAM)
+      // ---------------------------------------------
+      // Setelah animasi selesai, kembalikan grup lama ke BAWAH secara instan
+      setTimeout(() => {
+        currentItems.forEach((item) => {
+          const el = item as HTMLElement;
+
+          // MATIKAN TRANSISI (PENTING! Agar tidak kelihatan gerak turun)
+          el.classList.remove('transition-all', 'duration-700', 'ease-out');
+          el.classList.add('transition-none');
+
+          // Teleportasi dari Langit (-10) ke Bawah Tanah (10)
+          el.classList.remove('-translate-y-10');
+          el.classList.add('translate-y-10');
+        });
+      }, 1500); // Tunggu 1.5 detik (waktu aman setelah semua animasi selesai)
+
+      // Update Index
+      currentIndex = nextIndex;
+    }, 4500); // Interval total (4.5 detik)
+  });
+</script>

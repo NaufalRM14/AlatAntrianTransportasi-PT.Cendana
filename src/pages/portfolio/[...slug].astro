@@ -1,0 +1,90 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '~/layouts/PageLayout.astro';
+import Image from '~/components/common/Image.astro';
+import { Icon } from 'astro-icon/components';
+
+export async function getStaticPaths() {
+  const portfolios = await getCollection('portfolio');
+  return portfolios.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+
+const metadata = {
+  title: entry.data.title,
+  description: entry.data.description,
+};
+---
+
+<Layout metadata={metadata}>
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 pt-8 pb-4">
+    <a
+      href="/portfolio"
+      class="btn-back inline-flex items-center px-4 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-full shadow-sm hover:bg-gray-50 hover:text-primary dark:bg-slate-800 dark:text-gray-300 dark:border-slate-700 dark:hover:bg-slate-700 transition-all duration-200"
+    >
+      <Icon name="tabler:chevron-left" class="w-5 h-5 mr-1 -ml-1" />
+      Kembali ke Galeri
+    </a>
+  </div>
+  <section class="py-8 sm:py-16 lg:py-20 mx-auto max-w-5xl px-4 sm:px-6">
+    <div class="text-center mb-10">
+      <span class="text-primary font-bold tracking-wider uppercase text-sm">{entry.data.category}</span>
+      <h1 class="text-4xl md:text-5xl font-bold leading-tighter tracking-tighter font-heading mt-2 mb-6">
+        {entry.data.title}
+      </h1>
+
+      <div class="flex justify-center items-center gap-4 text-muted text-sm">
+        <div class="flex items-center">
+          <Icon name="tabler:building" class="w-4 h-4 mr-1" />
+          {entry.data.clientName}
+        </div>
+        <div class="flex items-center">
+          <Icon name="tabler:calendar" class="w-4 h-4 mr-1" />
+          {
+            entry.data.completionDate
+              ? new Date(entry.data.completionDate).toLocaleDateString('id-ID', { year: 'numeric', month: 'long' })
+              : 'Selesai'
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-12 rounded-xl overflow-hidden shadow-2xl">
+      {
+        entry.data.image && (
+          <Image
+            src={entry.data.image}
+            alt={entry.data.title}
+            class="w-full h-auto object-cover"
+            widths={[800, 1200]}
+            width={1200}
+            height={675}
+          />
+        )
+      }
+    </div>
+
+    {
+      entry.data.tags && (
+        <div class="flex flex-wrap justify-center gap-2 mb-10">
+          {entry.data.tags.map((tag) => (
+            <span class="px-3 py-1 bg-gray-100 dark:bg-slate-800 rounded-full text-sm text-gray-600 dark:text-gray-300">
+              #{tag}
+            </span>
+          ))}
+        </div>
+      )
+    }
+
+    <article
+      class="prose prose-lg max-w-none dark:prose-invert mx-auto prose-img:rounded-lg prose-headings:font-heading prose-a:text-primary"
+    >
+      <Content />
+    </article>
+  </section>
+</Layout>

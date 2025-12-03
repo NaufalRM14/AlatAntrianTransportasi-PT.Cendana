@@ -1,0 +1,42 @@
+---
+const { headings } = Astro.props;
+---
+
+<div class="toc-container">
+  <h3 class="font-bold mb-4 text-gray-900 dark:text-white uppercase tracking-wider text-sm">Daftar Isi</h3>
+  <nav class="toc-nav">
+    <ul class="space-y-2 border-l-2 border-gray-100 dark:border-slate-800">
+      {
+        headings.map((heading) => (
+          <li class={`toc-item depth-${heading.depth} pl-4`}>
+            <a
+              href={`#${heading.slug}`}
+              class="text-sm text-gray-600 dark:text-slate-400 hover:text-primary hover:font-medium transition-colors block py-1"
+            >
+              {heading.text}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+</div>
+
+<script>
+  // Script untuk Active State saat scroll (Opsional tapi keren)
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      const id = entry.target.getAttribute('id');
+      if (entry.intersectionRatio > 0) {
+        document.querySelector(`.toc-item a[href="#${id}"]`)?.classList.add('text-primary', 'font-bold');
+      } else {
+        document.querySelector(`.toc-item a[href="#${id}"]`)?.classList.remove('text-primary', 'font-bold');
+      }
+    });
+  });
+
+  // Track semua header
+  document.querySelectorAll('h2[id], h3[id]').forEach((section) => {
+    observer.observe(section);
+  });
+</script>

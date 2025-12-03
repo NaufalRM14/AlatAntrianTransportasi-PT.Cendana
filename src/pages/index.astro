@@ -1,0 +1,362 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+
+import Hero from '~/components/widgets/Hero.astro';
+import Brands from '~/components/widgets/Brands.astro';
+import Note from '~/components/widgets/Note.astro';
+import Features from '~/components/widgets/Features.astro';
+import Features2 from '~/components/widgets/Features2.astro';
+import Steps from '~/components/widgets/Steps.astro';
+import Content from '~/components/widgets/Content.astro';
+import BlogLatestPosts from '~/components/widgets/BlogLatestPosts.astro';
+import FAQs from '~/components/widgets/FAQs.astro';
+import Stats from '~/components/widgets/Stats.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+import Testimonials from '~/components/widgets/Testimonials.astro';
+
+const metadata = {
+  title: 'Solusi Antrian Transportasi & Logistik Terintegrasi - AlatAntrian.com',
+  ignoreTitleTemplate: true,
+};
+---
+
+<Layout metadata={metadata}>
+
+  <!-- HERO -->
+  <Hero
+    actions={[
+      {
+        variant: 'primary',
+        text: 'Konsultasi Gratis',
+        href: 'https://wa.me/6282150065758?text=Halo%20saya%20ingin%20konsultasi%20antrian%20transportasi.',
+        target: '_blank',
+        icon: 'tabler:brand-whatsapp',
+      },
+      { text: 'Kunjungi Web Utama', href: 'https://alatantrian.com' },
+    ]}
+    image={{ src: '~/assets/images/header transportasi.jpg', alt: 'Transport Hero Image' }}
+  >
+    <Fragment slot="title">
+      Solusi Sistem Antrian <span class="hidden xl:inline">Transportasi & Logistik</span>
+      <span class="text-accent dark:text-white"> Modern </span> & Terintegrasi
+    </Fragment>
+
+    <Fragment slot="subtitle">
+      Mempercepat layanan terminal, pelabuhan, dan pusat logistik menggunakan sistem antrian otomatis berbasis dashboard real-time.
+    </Fragment>
+  </Hero>
+
+  <!-- BRANDS -->
+  <Brands
+    title="Dipercaya oleh Instansi Transportasi & Logistik"
+    subtitle="Digunakan oleh terminal, pelabuhan, ekspedisi, dan gudang distribusi"
+    icons={[]}
+    images={[ 
+      {
+        src: '~/assets/images/asdp fery indo.png',
+        alt: 'asdp fery indo',
+      },
+      {
+        src: '~/assets/images/logo knkt.png',
+        alt: 'Lambang Komite Nasional Keselamatan Transportasi',
+      },
+      {
+        src: '~/assets/images/damrilogo.webp',
+        alt: 'damri',
+      },
+      {
+        src: '~/assets/images/angkasa pura.jpg',
+        alt: 'angkas apura',
+      },
+      {
+        src: '~/assets/images/logo pelindo.png',
+      },
+      {
+        src: '~/assets/images/pos indo.png',
+      },
+      {
+        src: '~/assets/images/jne.jpg',
+      },
+      {
+        src: '~/assets/images/badan transportasi.png',
+      },
+      {
+        src: '~/assets/images/kai.png',
+      },
+      {
+        src: '~/assets/images/jnt.png',
+      },
+    ]}
+  />
+
+  <!-- NOTE -->
+  <Note title="Filosofi:" description="Simplicity, Best Practices and High Performance" />
+
+  <!-- FEATURES -->
+  <Features
+    id="fitur"
+    tagline="Keunggulan Utama"
+    title="Mengapa Digitalisasi Penting untuk Transportasi & Logistik?"
+    subtitle="Fitur unggulan untuk operasional terminal, pelabuhan, ekspedisi, dan pusat logistik"
+    items={[
+      {
+        title: 'Antrian Cepat dan Akurat',
+        description:
+          'Mengurangi penumpukan kendaraan/penumpang dan mempercepat alur layanan keberangkatan dan logistik.',
+        icon: 'tabler:user-bolt',
+      },
+      {
+        title: 'Integrasi Multi-Layanan',
+        description:
+          'Mendukung tiket, check-in, customer service, drop-off barang, dan layanan ekspedisi.',
+        icon: 'tabler:device-mobile',
+      },
+      {
+        title: 'Dashboard Monitoring',
+        description:
+          'Pantau performa operasional terminal dan gudang secara real-time langsung dari ruang manajemen.',
+        icon: 'tabler:chart-dots',
+      },
+      {
+        title: 'Notifikasi Panggilan Suara',
+        description:
+          'Panggilan nomor antrian otomatis dengan suara jelas, cocok untuk area ramai seperti terminal & pelabuhan.',
+        icon: 'tabler:volume',
+      },
+    ]}
+  />
+
+  <!-- CONTENT: HARDWARE -->
+  <Content
+    isReversed
+    tagline="Hardware Tangguh"
+    title="Kiosk Elegan & Tahan Lingkungan Industri"
+    items={[
+      {
+        title: 'Material Anti-Karat',
+        description:
+          'Cocok untuk area pelabuhan yang lembap maupun gudang logistik berdebu.',
+      },
+      {
+        title: 'Touchscreen Industrial',
+        description: 'Tahan sentuhan intens & beroperasi 24/7 di lingkungan operasional padat.',
+      },
+      {
+        title: 'Printer Thermal Kecepatan Tinggi',
+        description:
+          'Cetak tiket antrian dalam hitungan detik meskipun pada jam sibuk keberangkatan.',
+      },
+    ]}
+    image={{
+      src: '~/assets/images/transportasi dan logistik.jpg',
+      alt: 'Kiosk Transportasi',
+    }}
+  >
+    <Fragment slot="content">
+      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">
+        Siap Dipasang di Terminal & Gudang
+      </h3>
+      Kiosk kami dapat disesuaikan brandingnya untuk instansi Anda, sehingga tampak profesional dan modern.
+    </Fragment>
+  </Content>
+
+  <!-- CONTENT: SOFTWARE -->
+  <Content
+    isAfterContent
+    items={[
+      {
+        title: 'Alur Layanan Fleksibel',
+        description:
+          'Mendukung layanan tiket, check-in, drop-off barang, registrasi kendaraan, dan customer service.',
+      },
+      {
+        title: 'Integrasi Sistem Keberangkatan',
+        description:
+          'Terhubung dengan sistem boarding, tiket elektronik, dan manajemen kendaraan logistik.',
+      },
+      {
+        title: 'Laporan Statistik Lengkap',
+        description:
+          'Pantau waktu tunggu, jumlah kendaraan/penumpang, dan performa petugas secara lengkap.',
+      },
+    ]}
+    image={{
+      src: '~/assets/images/software transportasi.jpg',
+      alt: 'Software Antrian Logistik',
+    }}
+  >
+    <Fragment slot="content">
+      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">
+        Software yang Memahami Alur Transportasi
+      </h3>
+      Dibuat khusus untuk operasional terminal, pelabuhan, dan pusat logistik.
+    </Fragment>
+  </Content>
+
+  <!-- STEPS -->
+  <Steps
+    title="Bagaimana Cara Implementasinya?"
+    tagline="Alur Kerjasama"
+    items={[
+      {
+        title: 'Langkah 1: Konsultasi & Survey',
+        description:
+          'Tim kami berdiskusi dengan manajemen terminal/pelabuhan dan melakukan survey lokasi.',
+        icon: 'tabler:messages',
+      },
+      {
+        title: 'Langkah 2: Penawaran & Demo',
+        description:
+          'Kami memberikan proposal teknis dan demo sistem sesuai kebutuhan transportasi/logistik.',
+        icon: 'tabler:presentation',
+      },
+      {
+        title: 'Langkah 3: Instalasi & Konfigurasi',
+        description:
+          'Pemasangan kiosk, TV display, serta pengaturan alur layanan dan multi-loket.',
+        icon: 'tabler:tool',
+      },
+      {
+        title: 'Siap Digunakan!',
+        icon: 'tabler:check',
+      },
+    ]}
+  />
+
+  <!-- SUPPORT -->
+  <Features2
+    title="Layanan Purna Jual & Support"
+    subtitle="Kami memastikan operasional terminal & logistik Anda berjalan lancar"
+    tagline="Komitmen Kami"
+    items={[
+      {
+        title: 'Garansi Resmi 1 Tahun',
+        description: 'Layanan sparepart dan perbaikan resmi.',
+        icon: 'tabler:certificate',
+      },
+      {
+        title: 'Teknisi Ready Visit',
+        description:
+          'Kunjungan onsite untuk terminal, pelabuhan, dan gudang.',
+        icon: 'tabler:user-check',
+      },
+      {
+        title: 'Remote Support 24/7',
+        description:
+          'Bantuan teknis kapan saja melalui WhatsApp / TeamViewer.',
+        icon: 'tabler:headset',
+      },
+      {
+        title: 'Update Software Gratis',
+        description:
+          'Fitur terbaru dan penyempurnaan diberikan tanpa biaya tambahan.',
+        icon: 'tabler:refresh',
+      },
+      {
+        title: 'Sparepart Ready Stock',
+        description: 'Komponen penting tersedia setiap saat.',
+        icon: 'tabler:package',
+      },
+      {
+        title: 'Training Petugas',
+        description: 'Pelatihan workflow untuk petugas loket dan operator.',
+        icon: 'tabler:school',
+      },
+    ]}
+  />
+
+  <!-- TESTIMONIALS -->
+  <Testimonials
+    title="Kata Mereka Tentang Kami"
+    subtitle="Pengalaman langsung dari instansi Transportasi & Logistik"
+    testimonials={[
+      {
+        testimonial: `Sistem antrian ini membuat proses keberangkatan jauh lebih tertib dan cepat. Sangat membantu operasional harian.`,
+        name: 'Andika Putra',
+        job: 'Supervisor Operasional – DAMRI',
+        image: {
+          src: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=100&h=100&q=80',
+          alt: 'User 1',
+        },
+      },
+      {
+        testimonial: `Dashboard monitoring membantu kami mengatur jam padat dan distribusi tenaga kerja di gudang.`,
+        name: 'Dewa Santoso',
+        job: 'Kepala Gudang – J&T Cargo',
+        image: {
+          src: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=100&h=100&q=80',
+          alt: 'User 2',
+        },
+      },
+      {
+        testimonial: `Alatnya kokoh dan stabil meskipun dipakai di area pelabuhan. Sangat mendukung pelayanan penumpang.`,
+        name: 'Capt. Ridwan F.',
+        job: 'Koordinator Pelayanan Penumpang – ASDP',
+        image: {
+          src: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&h=100&q=80',
+          alt: 'User 3',
+        },
+      },
+    ]}
+  />
+
+  <!-- FAQ -->
+  <FAQs
+    title="FAQ (Pertanyaan Sering Ditanyakan)"
+    subtitle="Informasi tambahan sebelum menggunakan sistem"
+    tagline="Informasi"
+    items={[
+      {
+        title: 'Apakah alat ini bisa digunakan outdoor?',
+        description:
+          'Ya, kiosk berbahan anti-karat dan cocok untuk pelabuhan dan area outdoor.',
+      },
+      {
+        title: 'Berapa banyak loket yang bisa terhubung?',
+        description:
+          'Sistem mendukung hingga 99 loket.',
+      },
+      {
+        title: 'Apakah tampilan antrian bisa disesuaikan?',
+        description:
+          'UI/UX dapat mengikuti branding operator transportasi.',
+      },
+      {
+        title: 'Bagaimana jika printer kehabisan kertas?',
+        description:
+          'Dashboard akan memberikan notifikasi otomatis kepada petugas.',
+      },
+    ]}
+  />
+
+  <!-- STATS -->
+  <Stats
+    stats={[
+      { title: 'Instansi Menggunakan', amount: '700+' },
+      { title: 'Efisiensi Waktu Pelayanan', amount: '45%' },
+      { title: 'Tiket Diproses Harian', amount: '50.000+' },
+      { title: 'Uptime Operasional', amount: '99.1%' },
+    ]}
+  />
+
+  <!-- CTA -->
+  <CallToAction
+    actions={[
+      {
+        variant: 'primary',
+        text: 'Hubungi Kami',
+        href: 'https://wa.me/6282150065758?text=Halo%20Saya%20ingin%20informasi%20solusi%20antrian%20transportasi.',
+        target: '_blank',
+        icon: 'tabler:brand-whatsapp',
+      },
+    ]}
+  >
+    <Fragment slot="title">Siap Tingkatkan Efisiensi Transportasi Anda?</Fragment>
+
+    <Fragment slot="subtitle">
+      Permudah pengelolaan antrian di terminal, pelabuhan, dan pusat logistik.<br class="hidden md:inline" />
+      Dapatkan konsultasi & demo gratis hari ini.
+    </Fragment>
+  </CallToAction>
+
+</Layout>

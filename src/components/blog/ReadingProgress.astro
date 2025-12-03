@@ -1,0 +1,52 @@
+---
+
+---
+
+<div
+  id="reading-progress-container"
+  class="fixed top-0 left-0 w-full h-1.5 z-[9999] bg-transparent opacity-0 transition-opacity duration-300 pointer-events-none"
+>
+  <div
+    id="reading-progress-bar"
+    class="h-full bg-primary origin-left w-0 shadow-[0_0_10px_rgba(var(--aw-color-primary),0.7)]"
+  >
+  </div>
+</div>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const container = document.getElementById('reading-progress-container');
+    const bar = document.getElementById('reading-progress-bar');
+
+    // Pastikan elemen .prose ada (ini class pembungkus artikel di SinglePost.astro)
+    const content = document.querySelector('.prose') as HTMLElement;
+
+    if (!container || !bar || !content) return;
+
+    const updateProgress = () => {
+      const viewportHeight = window.innerHeight;
+      const scrollY = window.scrollY;
+
+      const contentTopOffset = content.offsetTop;
+      const contentHeight = content.offsetHeight;
+
+      // Rumus: (Scroll Saat Ini - Awal Artikel) / (Tinggi Artikel - Layar)
+      let percent = ((scrollY - contentTopOffset) / (contentHeight - viewportHeight)) * 100;
+
+      // Logika Tampilan
+      if (percent > 0) {
+        container.classList.remove('opacity-0');
+        // Batasi maksimal 100% agar tidak bablas
+        if (percent > 100) percent = 100;
+        bar.style.width = `${percent}%`;
+      } else {
+        container.classList.add('opacity-0');
+        bar.style.width = '0%';
+      }
+    };
+
+    // Gunakan passive: true untuk performa scroll lebih ringan
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    updateProgress();
+  });
+</script>

@@ -1,0 +1,79 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import HeroText from '~/components/widgets/HeroText.astro';
+import ContactUs from '~/components/widgets/Contact.astro';
+import Features2 from '~/components/widgets/Features2.astro';
+
+const metadata = {
+  title: 'Hubungi Kami',
+};
+---
+
+<Layout metadata={metadata}>
+  <!-- HeroText Widget ******************* -->
+
+  <HeroText
+    tagline="Kontak"
+    title="Mari Diskusikan Kebutuhan Anda"
+    subtitle="Tim konsultan kami siap memberikan solusi antrian terbaik untuk Rumah Sakit Anda."
+  />
+
+  <ContactUs
+    id="form"
+    title="Kirim Pesan"
+    subtitle="Isi formulir di bawah ini untuk meminta penawaran harga, jadwal demo, atau konsultasi teknis."
+    inputs={[
+      {
+        type: 'text',
+        name: 'name',
+        label: 'Nama Lengkap',
+      },
+      {
+        type: 'email',
+        name: 'email',
+        label: 'Alamat Email',
+      },
+      {
+        type: 'text',
+        name: 'instansi',
+        label: 'Nama Instansi / RS',
+      },
+    ]}
+    textarea={{
+      label: 'Pesan / Kebutuhan',
+    }}
+    disclaimer={{
+      label: 'Dengan mengirimkan formulir ini, Anda setuju untuk dihubungi oleh tim sales kami.',
+    }}
+    description="Tim kami akan membalas pesan Anda maksimal 1x24 jam kerja."
+    button="Kirim Pesan"
+  />
+
+  <!-- Features2 Widget ************** -->
+
+  <Features2
+    title="Saluran Layanan"
+    items={[
+      {
+        title: 'Sales & Marketing',
+        description: `Konsultasi produk baru dan penawaran harga.`,
+        icon: 'tabler:shopping-cart',
+      },
+      {
+        title: 'Technical Support',
+        description: 'Bantuan teknis untuk kendala instalasi atau penggunaan software.',
+        icon: 'tabler:headset',
+      },
+      {
+        title: 'Hotline (WhatsApp)',
+        description: '+62 812-3456-7890',
+        icon: 'tabler:brand-whatsapp',
+      },
+      {
+        title: 'Email',
+        description: 'sales@alatantrian.com',
+        icon: 'tabler:mail',
+      },
+    ]}
+  />
+</Layout>
