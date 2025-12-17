@@ -1,6 +1,6 @@
 ---
-title: "Antrian Terminal Bus: Strategi Penertiban Layanan Transportasi"
-excerpt: "Antrian Terminal Bus membantu menertibkan alur penumpang, mengurangi kepadatan area layanan, dan meningkatkan kualitas pelayanan publik."
+title: 'Antrian Terminal Bus: Strategi Penertiban Layanan Transportasi'
+excerpt: 'Antrian Terminal Bus membantu menertibkan alur penumpang, mengurangi kepadatan area layanan, dan meningkatkan kualitas pelayanan publik.'
 publishDate: 2025-12-11
 image: ~/assets/images/terminalbus.jpg
 ---
@@ -15,13 +15,13 @@ Sebagai Kepala Operasional Terminal Bus atau pengelola transportasi publik, Anda
 
 Banyak terminal bus masih mengandalkan antrean fisik dan pengumuman manual. Metode konvensional ini menimbulkan berbagai masalah operasional:
 
-* **Penumpukan di Loket dan Ruang Tunggu**  
+- **Penumpukan di Loket dan Ruang Tunggu**  
   Penumpang berkumpul tanpa kepastian giliran sehingga menciptakan kepadatan berlebih.
 
-* **Keterlambatan Keberangkatan Bus**  
+- **Keterlambatan Keberangkatan Bus**  
   Proses naik penumpang yang tidak tertib berdampak langsung pada jadwal operasional.
 
-* **Pelayanan Tidak Inklusif**  
+- **Pelayanan Tidak Inklusif**  
   Lansia dan penyandang disabilitas tidak mendapatkan prioritas layanan.
 
 Kondisi ini bertentangan dengan prinsip pelayanan transportasi publik yang tertib dan aman sebagaimana diarahkan oleh Kementerian Perhubungan Republik Indonesia melalui kebijakan di [dephub.go.id](https://dephub.go.id).
@@ -36,21 +36,20 @@ Implementasi **Antrian Terminal Bus** tidak hanya menertibkan antrean penumpang,
 
 Solusi dari **AlatAntrian Transportasi & Logistik** memberikan kendali penuh mulai dari pengambilan nomor antrean, pemanggilan otomatis, hingga pengelolaan jalur keberangkatan bus secara terpusat.
 
-
 ---
 
 ### Fitur Utama
 
-* **Ticketing Antrian Otomatis**  
+- **Ticketing Antrian Otomatis**  
   Penumpang dapat mengambil nomor antrean secara mandiri sehingga loket tidak lagi dipadati.
 
-* **Pemanggilan Display & Suara**  
+- **Pemanggilan Display & Suara**  
   Nomor antrean ditampilkan di layar digital dan diumumkan melalui sistem audio, memungkinkan penumpang menunggu dengan nyaman di ruang tunggu.
 
-* **Antrian Prioritas**  
+- **Antrian Prioritas**  
   Mendukung layanan khusus untuk lansia dan penyandang disabilitas sesuai standar pelayanan publik.
 
-* **Dashboard Monitoring Real-Time**  
+- **Dashboard Monitoring Real-Time**  
   Seluruh data antrean terekam otomatis dan dapat dianalisis. Untuk memahami pentingnya data ini, baca artikel kami tentang [**Manajemen Layanan Transportasi Publik**](/blog/manajemen-layanan-transportasi).
 
 Untuk detail lengkap produk, kunjungi halaman berikut:  
@@ -62,16 +61,20 @@ Atau lihat seluruh solusi kami di:
 
 ## Transformasi Layanan Terminal Bus dengan Sistem Digital
 
-### 1. Meningkatkan Ketertiban Operasional  
+### 1. Meningkatkan Ketertiban Operasional
+
 Alur penumpang menjadi lebih terstruktur dan mudah dikendalikan oleh petugas.
 
-### 2. Meningkatkan Kepuasan Penumpang  
+### 2. Meningkatkan Kepuasan Penumpang
+
 Penumpang memiliki kepastian giliran dan tidak perlu berdesakan di area layanan.
 
-### 3. Pengambilan Keputusan Berbasis Data  
+### 3. Pengambilan Keputusan Berbasis Data
+
 Manajemen dapat menyesuaikan kapasitas layanan berdasarkan data antrean aktual.
 
-### 4. Standar Pelayanan Publik Lebih Profesional  
+### 4. Standar Pelayanan Publik Lebih Profesional
+
 Terminal bus tampil lebih modern, tertib, dan berorientasi pada kenyamanan masyarakat.
 
 ![Sistem Pemanggilan Antrian Terminal Bus Digital](~/assets/images/sistemantrianbus.png)
